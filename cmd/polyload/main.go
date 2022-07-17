@@ -64,6 +64,8 @@ func (s *server) isRegisteredUser(h http.HandlerFunc) http.HandlerFunc {
 			}
 		}
 		if !verified {
+			log.Println("Malicious request from: ", r.Host)
+			log.Println("Malicious request from: ", r.RemoteAddr)
 			http.NotFound(w, r)
 			return
 		}
@@ -127,6 +129,10 @@ func (s *server) handleFileUpload() http.HandlerFunc {
 		case "azure":
 			s.load = uploader.NewAzure()
 		case "local":
+			s.load = uploader.NewLocalStorage()
+		case "aws":
+			s.load = uploader.NewAws()
+		default:
 			s.load = uploader.NewLocalStorage()
 		}
 		if err := s.load.UploadFile(fileHeader.Filename, fileData); err != nil {

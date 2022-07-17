@@ -3,6 +3,12 @@
 	"max_upload_size": 52428800 ,
 	"upload_dir": "/tmp/polyload",
 	"registered_users":"registeredUsers.txt",
+	"aws":{
+		"s3_bucket_name":"polyload",
+		"access_key_id":"",
+		"secret_access_key":"",
+		"s3_region":"ap-south-1"
+	},
 	"azure":{
 		"object_id":"",
 		"blob_container_name":"polyload",

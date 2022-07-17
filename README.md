@@ -11,6 +11,7 @@ Payload is the server that allows to download/upload files to any cloud service 
 Youtube link- https://www.youtube.com/watch?v=ESacD9lM8zA
 
 # Features
+Please mail souvikhaldar32@gmail.com to get a valid token for testing.  
 1. Upload a file to local storage
 `curl -XPOST -F "file=@filename" "http://souvikhaldar.in/upload?cloud=local&token=valid_token"`
 2. Upload a file to azure storage
