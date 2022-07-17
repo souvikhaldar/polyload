@@ -1,6 +1,6 @@
 package uploader
 
-type Uploader interface {
-	UploadFile(fileName string) (int64, error)
-	DownloadFile(fileNumber int64) ([]byte, error)
+type Loader interface {
+	UploadFile(fileName string, data []byte) error
+	DownloadFile(fileName string) ([]byte, error)
 }

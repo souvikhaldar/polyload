@@ -1,7 +1,8 @@
 package main
 
 import (
-	"io"
+	"bufio"
+	"io/ioutil"
 	"log"
 	"net/http"
 	"os"
@@ -12,7 +13,7 @@ import (
 )
 
 type server struct {
-	upload uploader.Uploader
+	load   uploader.Loader
 	router *mux.Router
 }
 
@@ -32,6 +33,42 @@ func init() {
 
 func (s *server) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	s.router.ServeHTTP(w, r)
+}
+
+func (s *server) isRegisteredUser(h http.HandlerFunc) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+
+		// TODO: this logic for verifying registered users needs to be updated to standard practices
+		token := r.URL.Query().Get("token")
+
+		readFile, err := os.Open(viper.GetString("registered_users"))
+		if err != nil {
+			log.Println("Could not read register user file: ", err)
+			http.NotFound(w, r)
+			return
+		}
+		fileScanner := bufio.NewScanner(readFile)
+		fileScanner.Split(bufio.ScanLines)
+		var fileLines []string
+
+		for fileScanner.Scan() {
+			fileLines = append(fileLines, fileScanner.Text())
+		}
+
+		readFile.Close()
+
+		verified := false
+		for _, line := range fileLines {
+			if token == line {
+				verified = true
+			}
+		}
+		if !verified {
+			http.NotFound(w, r)
+			return
+		}
+		h(w, r)
+	}
 }
 
 func (s *server) handleFileUpload() http.HandlerFunc {
@@ -61,35 +98,96 @@ func (s *server) handleFileUpload() http.HandlerFunc {
 			return
 		}
 		log.Println("File name: ", fileHeader.Filename)
-		dst, err := os.Create(
-			viper.GetString("upload_dir") + "/" + fileHeader.Filename,
-		)
+
+		// read the file contents
+		fileData, err := ioutil.ReadAll(file)
+		if len(fileData) == 0 {
+			http.Error(
+				w,
+				"File size receiver is 0",
+				http.StatusInternalServerError,
+			)
+			return
+
+		}
 		if err != nil {
 			http.Error(
 				w,
-				"Could not create the upload destination file: "+err.Error(),
+				err.Error(),
 				http.StatusInternalServerError,
 			)
 			return
 		}
-		defer dst.Close()
-		_, err = io.Copy(dst, file)
-		if err != nil {
+
+		// which cloud provider to upload to
+		cloud := r.URL.Query().Get("cloud")
+		log.Println("Upload to cloud: ", cloud)
+
+		switch cloud {
+		case "azure":
+			s.load = uploader.NewAzure()
+		case "local":
+			s.load = uploader.NewLocalStorage()
+		}
+		if err := s.load.UploadFile(fileHeader.Filename, fileData); err != nil {
 			http.Error(
 				w,
-				"Unable to copy files: "+err.Error(),
+				err.Error(),
 				http.StatusInternalServerError,
 			)
 			return
 		}
+		w.WriteHeader(http.StatusOK)
+
 		log.Println("Upload success")
 		return
 	}
 
 }
 
+func (s *server) handleFileDownload() http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		log.Println("Running in handleFileDownload")
+		// which cloud provider to upload to
+		cloud := r.URL.Query().Get("cloud")
+		fileName := r.URL.Query().Get("file")
+		log.Println("Upload to cloud: ", cloud)
+		log.Println("file: ", fileName)
+
+		switch cloud {
+		case "azure":
+			s.load = uploader.NewAzure()
+		case "local":
+			s.load = uploader.NewLocalStorage()
+		}
+		fileBytes, err := s.load.DownloadFile(fileName)
+		if err != nil {
+			http.Error(
+				w,
+				err.Error(),
+				http.StatusInternalServerError,
+			)
+			return
+
+		}
+		w.WriteHeader(http.StatusOK)
+		w.Header().Set("Content-Type", "application/octet-stream")
+		w.Write(fileBytes)
+		return
+
+	}
+}
+
 func (s *server) setRoutes() {
-	s.router.HandleFunc("/upload", s.handleFileUpload()).Methods("POST")
+	s.router.HandleFunc(
+		"/upload",
+		s.isRegisteredUser(s.handleFileUpload()),
+	).Methods("POST")
+
+	s.router.HandleFunc(
+		"/download",
+		s.isRegisteredUser(s.handleFileDownload()),
+	).Methods("GET")
 }
 func main() {
 	// create a new server

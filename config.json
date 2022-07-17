@@ -1,5 +1,12 @@
 {
 	"port":"8192",
 	"max_upload_size": 52428800 ,
-	"upload_dir": "/tmp/polyload"
+	"upload_dir": "/tmp/polyload",
+	"registered_users":"registeredUsers.txt",
+	"azure":{
+		"object_id":"",
+		"blob_container_name":"polyload",
+		"blob_storage_account_name":"polyload",
+		"storage_account_resource_id":""
+	}
 }
