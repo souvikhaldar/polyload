@@ -29,6 +29,9 @@ func init() {
 	if err := os.MkdirAll(viper.GetString("upload_dir"), os.ModePerm); err != nil {
 		log.Println("Unable to create upload dir "+viper.GetString("upload_dir")+": ", err)
 	}
+	if err := os.MkdirAll(viper.GetString("download_dir"), os.ModePerm); err != nil {
+		log.Println("Unable to create download dir "+viper.GetString("upload_dir")+": ", err)
+	}
 }
 
 func (s *server) ServeHTTP(w http.ResponseWriter, r *http.Request) {

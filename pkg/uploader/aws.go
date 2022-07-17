@@ -61,7 +61,7 @@ func (a *Aws) UploadFile(fileName string, data []byte) error {
 }
 func (a *Aws) DownloadFile(fileName string) ([]byte, error) {
 	// Create a file to write the S3 Object contents to.
-	f, err := os.Create("./" + fileName)
+	f, err := os.Create(viper.GetString("download_dir") + fileName)
 	if err != nil {
 		return nil, fmt.Errorf("failed to create file %q, %v", fileName, err)
 	}
