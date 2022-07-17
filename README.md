@@ -8,8 +8,7 @@ Payload is the server that allows to download/upload files to any cloud service 
 4. run the server by running `go run cmd/polyload/main.go` 
 
 # Demonstration
-Youtube link- https://www.youtube.com/watch?v=ESacD9lM8zA
-
+Youtube link- https://youtu.be/ZDYmxGZ-MjI 
 # Features
 Please mail souvikhaldar32@gmail.com to get a valid token for testing.  
 1. Upload a file to local storage
