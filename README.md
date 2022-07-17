@@ -12,10 +12,10 @@ Youtube link- https://www.youtube.com/watch?v=ESacD9lM8zA
 
 # Features
 1. Upload a file to local storage
-`curl -XPOST -F "file=@filename" "ip:port/upload?cloud=local&token=valid_token"`
+`curl -XPOST -F "file=@filename" "http://souvikhaldar.in/upload?cloud=local&token=valid_token"`
 2. Upload a file to azure storage
-`curl -XPOST -F "file=@filename" "ip:port/upload?cloud=azure&token=valid_token"`
+`curl -XPOST -F "file=@filename" "http://souvikhaldar.in/upload?cloud=azure&token=valid_token"`
 3. Download the same file from browser
-Visit `http://ip:port/download?cloud=local&file=filename`
+Visit `http://http://souvikhaldar.in/download?cloud=local&file=filename`
 or
-Visit `http://ip:port/download?cloud=azure&file=filename`
+Visit `http://http://souvikhaldar.in/download?cloud=azure&file=filename`
