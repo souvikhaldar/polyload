@@ -6,6 +6,7 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"time"
 
 	"github.com/gorilla/mux"
 	"github.com/souvikhaldar/polyload/pkg/uploader"
@@ -209,8 +210,8 @@ func main() {
 	srv := http.Server{
 		Addr:         ":" + viper.GetString("port"),
 		Handler:      s,
-		ReadTimeout:  0,
-		WriteTimeout: 0,
+		ReadTimeout:  5 * time.Minute,
+		WriteTimeout: 5 * time.Minute,
 	}
 	log.Fatal(srv.ListenAndServe())
 
