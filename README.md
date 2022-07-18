@@ -17,7 +17,7 @@ Please mail souvikhaldar32@gmail.com to get a valid token for testing.
 3. Upload a file to aws storage
 `curl -XPOST -F "file=@filename" "http://souvikhaldar.in/upload?cloud=azure&token=valid_token"`
 `curl -XPOST -F "file=@filename" "http://souvikhaldar.in/upload?cloud=aws&token=valid_token"`
-3. Download the same file from browser
+4. Download the same file from browser
 Visit `http://http://souvikhaldar.in/download?cloud=local&file=filename`  
 or  
 Visit `http://http://souvikhaldar.in/download?cloud=azure&file=filename`  
