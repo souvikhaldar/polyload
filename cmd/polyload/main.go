@@ -207,9 +207,10 @@ func main() {
 	}
 	s.setRoutes()
 	srv := http.Server{
-		Addr:        ":" + viper.GetString("port"),
-		Handler:     s,
-		ReadTimeout: 0,
+		Addr:         ":" + viper.GetString("port"),
+		Handler:      s,
+		ReadTimeout:  0,
+		WriteTimeout: 0,
 	}
 	log.Fatal(srv.ListenAndServe())
 
