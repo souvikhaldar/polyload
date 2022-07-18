@@ -206,6 +206,11 @@ func main() {
 		mux.NewRouter(),
 	}
 	s.setRoutes()
-	log.Fatal(http.ListenAndServe(":"+viper.GetString("port"), s))
+	srv := http.Server{
+		Addr:        ":" + viper.GetString("port"),
+		Handler:     s,
+		ReadTimeout: 0,
+	}
+	log.Fatal(srv.ListenAndServe())
 
 }
