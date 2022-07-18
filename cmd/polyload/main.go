@@ -20,6 +20,8 @@ type server struct {
 func init() {
 	// parse config file
 	viper.AddConfigPath(".")
+	viper.AddConfigPath("$HOME/.polyload") // call multiple times to add many search paths
+
 	viper.SetConfigName("config")
 	viper.SetConfigType("json")
 	viper.ReadInConfig()
