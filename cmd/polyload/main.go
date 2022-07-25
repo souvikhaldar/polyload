@@ -138,8 +138,14 @@ func (s *server) handleFileUpload() http.HandlerFunc {
 		case "aws":
 			s.load = uploader.NewAws()
 		default:
-			s.load = uploader.NewLocalStorage()
+			http.Error(
+				w,
+				"Invalid cloud name: "+cloud,
+				http.StatusBadRequest,
+			)
+			return
 		}
+
 		if err := s.load.UploadFile(fileHeader.Filename, fileData); err != nil {
 			http.Error(
 				w,
@@ -147,6 +153,19 @@ func (s *server) handleFileUpload() http.HandlerFunc {
 				http.StatusInternalServerError,
 			)
 			return
+		}
+		if cloud != "local" {
+			if err := os.Remove(
+				viper.GetString("upload_dir") + "/" + fileName,
+			); err != nil {
+				http.Error(
+					w,
+					err.Error(),
+					http.StatusInsufficientStorage,
+				)
+				return
+			}
+
 		}
 		w.WriteHeader(http.StatusOK)
 
