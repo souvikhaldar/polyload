@@ -156,7 +156,7 @@ func (s *server) handleFileUpload() http.HandlerFunc {
 		}
 		if cloud != "local" {
 			if err := os.Remove(
-				viper.GetString("upload_dir") + "/" + fileName,
+				viper.GetString("upload_dir") + "/" + fileHeader.Filename,
 			); err != nil {
 				http.Error(
 					w,
