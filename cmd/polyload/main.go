@@ -71,7 +71,11 @@ func (s *server) isRegisteredUser(h http.HandlerFunc) http.HandlerFunc {
 		}
 		if !verified {
 			log.Println("Malicious request from: ", r.RemoteAddr)
-			http.NotFound(w, r)
+			http.Error(
+				w,
+				"Permission denied",
+				http.StatusUnauthorized,
+			)
 			return
 		}
 		h(w, r)
