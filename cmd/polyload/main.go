@@ -154,19 +154,6 @@ func (s *server) handleFileUpload() http.HandlerFunc {
 			)
 			return
 		}
-		if cloud != "local" {
-			if err := os.Remove(
-				viper.GetString("upload_dir") + "/" + fileHeader.Filename,
-			); err != nil {
-				http.Error(
-					w,
-					err.Error(),
-					http.StatusInsufficientStorage,
-				)
-				return
-			}
-
-		}
 		w.WriteHeader(http.StatusOK)
 
 		log.Println("Upload success")
