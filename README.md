@@ -12,14 +12,14 @@ Youtube link- https://youtu.be/ZDYmxGZ-MjI
 # Features
 Please mail souvikhaldar32@gmail.com to get a valid token for testing.  
 1. Upload a file to local storage
-`curl -XPOST -F "file=@filename" "http://souvikhaldar.in/upload?cloud=local&token=valid_token"`
+`curl -XPOST -F "file=@filename" "http://souvikhaldar.in/upload?cloud=local&token=valid_token"`  
 2. Upload a file to azure storage
+`curl -XPOST -F "file=@filename" "http://souvikhaldar.in/upload?cloud=azure&token=valid_token"`  
 3. Upload a file to aws storage
-`curl -XPOST -F "file=@filename" "http://souvikhaldar.in/upload?cloud=azure&token=valid_token"`
-`curl -XPOST -F "file=@filename" "http://souvikhaldar.in/upload?cloud=aws&token=valid_token"`
+`curl -XPOST -F "file=@filename" "http://souvikhaldar.in/upload?cloud=aws&token=valid_token"`  
 4. Download the same file from browser
-Visit `http://http://souvikhaldar.in/download?cloud=local&file=filename`  
+Visit `http://http://souvikhaldar.in/download?cloud=local&file=filename&token=valid_token`  
 or  
-Visit `http://http://souvikhaldar.in/download?cloud=azure&file=filename`  
+Visit `http://http://souvikhaldar.in/download?cloud=azure&file=filename&token=valid_token`  
 or  
-Visit `http://http://souvikhaldar.in/download?cloud=aws&file=filename`
+Visit `http://http://souvikhaldar.in/download?cloud=aws&file=filename&token=valid_token`
