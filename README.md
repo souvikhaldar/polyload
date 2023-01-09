@@ -27,6 +27,7 @@ An example of `config.json` in `~/.polyload/`:
 }
 
 ```  
+In `registeredUsers.txt` file in this directory we provide the token of valid users in each line.  
 
 3. Append random strings which can act as token for valid users [this needs to be improved to improve the security]
 4. run the server by running `go run cmd/polyload/main.go` 
