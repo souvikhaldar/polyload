@@ -3,7 +3,31 @@ Payload is the server that allows to download/upload files to any cloud service 
 
 # Instructios
 1. Install golang
-2. Provide configurations in `config.json`
+2. Provide configurations in `config.json`  
+An example of `config.json` in `~/.polyload/`:  
+```
+{
+        "port":"8192",
+        "max_upload_size": 1073741824,
+        "upload_dir": "/tmp/polyload",
+        "download_dir":"~/polyload-download/",
+        "registered_users":"$HOME/.polyload/registeredUsers.txt",
+        "aws":{
+                "s3_bucket_name":"polyload",
+                "access_key_id":"",
+                "secret_access_key":"",
+                "s3_region":"ap-south-1"
+        },
+        "azure":{
+                "object_id":"",
+                "blob_container_name":"polyload",
+                "blob_storage_account_name":"polyload",
+                "storage_account_resource_id":""
+        }
+}
+
+```  
+
 3. Append random strings which can act as token for valid users [this needs to be improved to improve the security]
 4. run the server by running `go run cmd/polyload/main.go` 
 
